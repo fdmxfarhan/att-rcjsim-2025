@@ -1,0 +1,8 @@
+.idea/
+*.swp
+.soccer.wbproj
+*.pyc
+reflog/
+docs/docs/site/
+x11docker/
+Makefile
