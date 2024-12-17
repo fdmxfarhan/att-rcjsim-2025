@@ -1,5 +1,5 @@
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
-import keyboard,math,utils
+import math,utils
 
 class MyRobot3(RCJSoccerRobot):
     def run(self):
