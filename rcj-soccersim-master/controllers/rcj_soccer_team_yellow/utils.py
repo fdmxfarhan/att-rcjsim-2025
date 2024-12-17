@@ -1,5 +1,5 @@
 import math 
-def move(robot,xp,yp):            
+def move(robot,xp,yp):
     robot_pos = robot.get_gps_coordinates()
     heading =math.degrees(robot.get_compass_heading() ) # noqa: F841
 
