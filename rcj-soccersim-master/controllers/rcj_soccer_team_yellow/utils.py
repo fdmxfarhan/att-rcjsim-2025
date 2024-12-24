@@ -1,6 +1,4 @@
 import math
-
-
 def move(robot, xp, yp):
     robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())  # noqa: F841
@@ -17,8 +15,6 @@ def move(robot, xp, yp):
     else:
         robot.right_motor.setVelocity(10)
         robot.left_motor.setVelocity(10)
-
-
 def readData(robot):
     robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())
@@ -37,3 +33,22 @@ def readData(robot):
         robot.is_ball = True
     else:
         robot.is_ball = False
+    ###################################### Ersal Data be team
+    robot.send_data_to_team({
+        'is_ball': robot.is_ball,
+        'xb': robot.xb,
+        'yb': robot.yb,
+        'xr': robot.xr,
+        'yr': robot.yr,
+        'id': int(robot.robot.getName()[1]) - 1
+    })
+    ###################################### Daryaft Data az team
+    while robot.is_new_team_data():
+        team_data = robot.get_new_team_data()['robot_id']
+        if not robot.is_ball and team_data['is_ball']:
+            robot.xb = team_data['xb']
+            robot.yb = team_data['yb']
+            robot.is_ball = True
+def stop(robot):
+    robot.left_motor.setVelocity(0)
+    robot.right_motor.setVelocity(0)

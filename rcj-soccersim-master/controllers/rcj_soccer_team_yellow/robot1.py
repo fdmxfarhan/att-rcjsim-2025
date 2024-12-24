@@ -15,4 +15,4 @@ class MyRobot1(RCJSoccerRobot):
                 if self.is_ball:   
                     utils.move(self, self.xb, -0.6)
                 else:
-                    utils.move(self, 0, -0.6)
+                    utils.stop(self)
