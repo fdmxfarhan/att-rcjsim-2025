@@ -12,14 +12,7 @@ class MyRobot1(RCJSoccerRobot):
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
                 utils.readData(self)
-                if self.is_ball:
-                    if step == 1:
-                        utils.move(self, self.xb, self.yb-0.1)
-                        if abs(self.xr - self.xb) < 0.01 and abs(self.yr - (self.yb-0.1)) < 0.01:
-                            step = 2
-                    else: 
-                        utils.move(self, self.xb, self.yb)
-                        if abs(self.xr - self.xb) > 0.2 and abs(self.yr - self.yb) > 0.2:
-                            step = 1
+                if self.is_ball:   
+                    utils.move(self, self.xb, -0.6)
                 else:
                     utils.move(self, 0, -0.6)
