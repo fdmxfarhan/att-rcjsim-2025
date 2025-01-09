@@ -1,11 +1,10 @@
 import math
 def move(robot, xp, yp):
-    robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())  # noqa: F841
 
-    a = math.degrees(math.atan2(robot_pos[0] - xp, yp - robot_pos[1]))
+    a = math.degrees(math.atan2(robot.xr - xp, yp - robot.yr))
     e = heading - a
-    m = math.sqrt((robot_pos[0] - xp)**2 + (robot_pos[1] - yp)**2)
+    m = math.sqrt((robot.xr - xp)**2 + (robot.yr - yp)**2)
     if e < -10:
         robot.right_motor.setVelocity(-10)
         robot.left_motor.setVelocity(10)
@@ -18,8 +17,11 @@ def move(robot, xp, yp):
 def readData(robot):
     robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())
-    robot.xr = robot_pos[0]
-    robot.yr = robot_pos[1]
+    robot.xr = robot.xr
+    robot.yr = robot.yr
+    if robot.robot.getName()[0] == 'B':
+        robot.xr *= -1
+        robot.yr *= -1
     if robot.is_new_ball_data():
         ball_data = robot.get_new_ball_data()
         ball_angle = math.degrees(math.atan2(
@@ -42,7 +44,6 @@ def readData(robot):
         'yr': robot.yr,
         'id': int(robot.robot.getName()[1]) - 1
     })
-    ###################################### Daryaft Data az team
     while robot.is_new_team_data():
         team_data = robot.get_new_team_data()['robot_id']
         if not robot.is_ball and team_data['is_ball']:
@@ -52,3 +53,5 @@ def readData(robot):
 def stop(robot):
     robot.left_motor.setVelocity(0)
     robot.right_motor.setVelocity(0)
+
+## https://github.com/fdmxfarhan/att-rcjsim-2025
