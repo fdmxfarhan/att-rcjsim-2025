@@ -1,4 +1,5 @@
 import math
+
 def move(robot, xp, yp):
     heading = math.degrees(robot.get_compass_heading())  # noqa: F841
 
@@ -17,8 +18,8 @@ def move(robot, xp, yp):
 def readData(robot):
     robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())
-    robot.xr = robot.xr
-    robot.yr = robot.yr
+    robot.xr = robot_pos[0]
+    robot.yr = robot_pos[1]
     if robot.robot.getName()[0] == 'B':
         robot.xr *= -1
         robot.yr *= -1
