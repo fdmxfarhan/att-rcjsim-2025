@@ -5,60 +5,16 @@ def move(robot, xp, yp):
 
     a = math.degrees(math.atan2(robot.xr - xp, yp - robot.yr))
     e = heading - a
-    if e > 180: e -= 360
-    if e <-180: e += 360
     m = math.sqrt((robot.xr - xp)**2 + (robot.yr - yp)**2)
-    if e < -45:
+    if e < -10:
         robot.right_motor.setVelocity(-10)
         robot.left_motor.setVelocity(10)
-    elif e > 45:
+    elif e > 10:
         robot.right_motor.setVelocity(10)
         robot.left_motor.setVelocity(-10)
     else:
-        rv = 10 + e * 0.3
-        lv = 10 - e * 0.3
-        if rv > 10: rv = 10
-        if rv < -10: rv = -10
-        if lv > 10: lv = 10
-        if lv < -10: lv = -10
-        robot.right_motor.setVelocity(rv)
-        robot.left_motor.setVelocity(lv)
-def moveAndLook(robot, xp, yp, xl, yl):
-    heading = math.degrees(robot.get_compass_heading())  # noqa: F841
-
-    a = math.degrees(math.atan2(robot.xr - xp, yp - robot.yr))
-    e = heading - a
-    if e > 180: e -= 360
-    if e <-180: e += 360
-    m = math.sqrt((robot.xr - xp)**2 + (robot.yr - yp)**2)
-    if m < 0.05:
-        a = math.degrees(math.atan2(robot.xr - xl, yl - robot.yr))
-        e = heading - a
-        if e > 180: e -= 360
-        if e <-180: e += 360
-        rv =  e * 0.3
-        lv = -e * 0.3
-        if rv > 10: rv = 10
-        if rv < -10: rv = -10
-        if lv > 10: lv = 10
-        if lv < -10: lv = -10
-        robot.right_motor.setVelocity(rv)
-        robot.left_motor.setVelocity(lv)
-    elif e < -45:
-        robot.right_motor.setVelocity(-10)
-        robot.left_motor.setVelocity(10)
-    elif e > 45:
         robot.right_motor.setVelocity(10)
-        robot.left_motor.setVelocity(-10)
-    else:
-        rv = 10 + e * 0.3
-        lv = 10 - e * 0.3
-        if rv > 10: rv = 10
-        if rv < -10: rv = -10
-        if lv > 10: lv = 10
-        if lv < -10: lv = -10
-        robot.right_motor.setVelocity(rv)
-        robot.left_motor.setVelocity(lv)
+        robot.left_motor.setVelocity(10)
 def readData(robot):
     robot_pos = robot.get_gps_coordinates()
     heading = math.degrees(robot.get_compass_heading())
@@ -98,11 +54,5 @@ def readData(robot):
 def stop(robot):
     robot.left_motor.setVelocity(0)
     robot.right_motor.setVelocity(0)
-def initvars(robot):
-    robot.xb = 0
-    robot.yb = 0
-    robot.is_ball = False
-    robot.xr = 0
-    robot.yr = 0
 
 ## https://github.com/fdmxfarhan/att-rcjsim-2025
