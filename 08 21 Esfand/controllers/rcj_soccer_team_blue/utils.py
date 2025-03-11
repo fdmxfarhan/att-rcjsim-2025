@@ -1,7 +1,5 @@
-import math, time
+import math
 
-def dist(x1, y1, x2, y2):
-    return math.sqrt((x1-x2)**2 + (y1 - y2)**2)
 def move(robot, xp, yp):
     heading = math.degrees(robot.get_compass_heading())  # noqa: F841
 
@@ -63,7 +61,7 @@ def moveAndLook(robot, xp, yp, xl, yl):
         robot.left_motor.setVelocity(lv)
 def readData(robot):
     robot_pos = robot.get_gps_coordinates()
-    robot.heading = math.degrees(robot.get_compass_heading())
+    heading = math.degrees(robot.get_compass_heading())
     robot.xr = robot_pos[0]
     robot.yr = robot_pos[1]
     if robot.robot.getName()[0] == 'B':
@@ -75,9 +73,9 @@ def readData(robot):
             ball_data['direction'][1], ball_data['direction'][0]))
         ball_distance = abs(
             0.0166666666 / abs(ball_data['direction'][2]) / math.sqrt(1 - ball_data['direction'][2]**2))
-        robot.xb = -math.sin(math.radians(ball_angle + robot.heading)
+        robot.xb = -math.sin(math.radians(ball_angle + heading)
                              ) * ball_distance + robot.xr
-        robot.yb = math.cos(math.radians(ball_angle + robot.heading)
+        robot.yb = math.cos(math.radians(ball_angle + heading)
                             ) * ball_distance + robot.yr
         robot.is_ball = True
     else:
@@ -99,48 +97,14 @@ def readData(robot):
             robot.is_ball = True
     if robot.xb > 0.58: robot.xb = 0.58
     if robot.xb <-0.58: robot.xb =-0.58
-    ###################################### Detect Ball Movement
-    if time.time() - robot.last_time > 0.5:
-        if dist(robot.xb, robot.yb, robot.last_xb, robot.last_yb) < 0.01:
-            robot.ball_stop_time += 0.5
-        else:
-            robot.ball_stop_time = 0
-        robot.last_time = time.time()
-        robot.last_xb = robot.xb
-        robot.last_yb = robot.yb
-    ##################################### Calculate nearest neutral spot
-    neutral_spots = [
-        [-0.3, -0.3],
-        [ 0.3, -0.3],
-        [ 0.3,  0.3],
-        [-0.3,  0.3],
-    ]
-    minDist = 100
-    minIndex = -1
-    for i in range(4):
-        d = dist(neutral_spots[i][0], neutral_spots[i][1], robot.xr, robot.yr)
-        if d < minDist:
-            minDist = d
-            minIndex = i
-    robot.x_nearest_ns = neutral_spots[minIndex][0]
-    robot.y_nearest_ns = neutral_spots[minIndex][1]-0.2
-
 def stop(robot):
     robot.left_motor.setVelocity(0)
     robot.right_motor.setVelocity(0)
 def initvars(robot):
-    
     robot.xb = 0
     robot.yb = 0
     robot.is_ball = False
     robot.xr = 0
     robot.yr = 0
-    robot.last_xb = 0
-    robot.last_yb = 0
-    robot.last_time = time.time() 
-    robot.ball_stop_time = 0
-    robot.x_nearest_ns = 0
-    robot.y_nearest_ns = 0
-    robot.heading = 0
 
 ## https://github.com/fdmxfarhan/att-rcjsim-2025
